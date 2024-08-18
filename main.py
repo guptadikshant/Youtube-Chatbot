@@ -3,7 +3,7 @@ import uuid
 
 import streamlit as st
 
-VIDEO_TRANSCRIPT = "transcript.txt"
+from utils import download_youtube_video_transcript
 
 
 def main() -> None:
@@ -30,18 +30,17 @@ def main() -> None:
             # Create a new subdirectory with the generated UUID
             video_file_path = os.path.join(saved_videos_dir, str(new_uuid))
             os.makedirs(video_file_path, exist_ok=True)
-            st.write(f"Created directory: {video_file_path}")
+
+            download_youtube_video_transcript(
+                video_link=video_link,
+                path=os.path.abspath(video_file_path)
+            )
 
         else:
             # Use the existing UUID for the video link
             video_file_path = os.path.join(saved_videos_dir, str(st.session_state.video_links[video_link]))
             st.write(f"Using existing directory: {video_file_path}")
 
-        # Save the video link to a file in the subdirectory
-        with open(os.path.join(video_file_path, VIDEO_TRANSCRIPT), "w") as file:
-            file.write(video_link)
-
 
 if __name__ == '__main__':
     main()
-    
