@@ -1,0 +1,10 @@
+streamlit
+langchain
+langchain-community
+langchain-openai
+langchain-google-genai
+langchain-groq
+python-dotenv
+yt-dlp
+git+https://github.com/openai/whisper.git
+git+https://github.com/yt-dlp/yt-dlp#dependencies
