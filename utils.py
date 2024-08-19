@@ -35,11 +35,11 @@ def download_youtube_video_transcript(video_link: str, path: str) -> None:
     
         transcription = whisper_model.transcribe(audio_file_path)["text"].strip()
     
-        with open(os.path.join(path, "transcription.txt"), "w") as file:
+        with open(os.path.join(path, "transcript.txt"), "w") as file:
             file.write(transcription)
     
     except FileNotFoundError:
-        print(f"{os.path.join(path, 'transcription.txt')} already exists")
+        print(f"{os.path.join(path, 'transcript.txt')} already exists")
     
     finally:
         shutil.rmtree(YOUTUBE_DIR)
