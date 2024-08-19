@@ -24,6 +24,10 @@ def main() -> None:
     if "transcription_done" not in st.session_state:
         st.session_state.transcription_done = False
 
+    # Session State Variable
+    if 'chat_history' not in st.session_state:
+        st.session_state.chat_history = []
+
     with st.container():
         if not st.session_state.transcription_done:
             video_link = st.text_input("Upload your videos here.....")
@@ -48,30 +52,34 @@ def main() -> None:
                         )
                         st.success("Video transcript saved successfully!!!")
                         st.session_state.transcription_done = True
-                    else:
-                        # Use the existing UUID for the video link
-                        st.session_state.video_file_path = os.path.join(saved_videos_dir,
-                                                                        str(st.session_state.video_links[video_link]))
-                        st.write(f"Using existing directory: {st.session_state.video_file_path}")
-                        st.session_state.transcription_done = True
 
     if st.session_state.transcription_done:
-        with st.container():
-            user_question = st.text_input("Enter your questions here......")
+        # Display chat history first
+        for message in st.session_state.chat_history:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
 
-            generate_response = st.button("Generate Response")
+        # The question-asking prompt is now placed after displaying the chat history.
+        user_question = st.chat_input(placeholder="Enter your questions here......")
 
-            if user_question and generate_response:
-                with st.spinner("Generating Response....."):
-                    with open(os.path.join(st.session_state.video_file_path, "transcript.txt"), "r") as file:
-                        transcript_data = file.read()
+        if user_question:
+            st.chat_message('user').markdown(user_question)
+            # Save the user's input in the session and role will be user
+            st.session_state.chat_history.append({"role": 'user', "content": user_question})
+            with st.spinner("Generating Response....."):
+                with open(os.path.join(st.session_state.video_file_path, "transcript.txt"), "r") as file:
+                    transcript_data = file.read()
 
+                with st.chat_message("assistant"):
                     final_output = get_model_output(
                         video_transcript=transcript_data,
                         question=user_question
                     )
-
                     if final_output:
+                        # Save the AI's response and role will be of AI
+                        message = {'role': 'assistant', 'content': final_output}
+                        # Save its response in the session state
+                        st.session_state.chat_history.append(message)
                         st.write(final_output)
 
 
