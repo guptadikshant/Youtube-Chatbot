@@ -41,6 +41,7 @@ def main() -> None:
                     video_link=video_link,
                     path=os.path.abspath(st.session_state.video_file_path)
                 )
+                st.success("Video transcript saved successfully!!!")
             else:
                 # Use the existing UUID for the video link
                 st.session_state.video_file_path = os.path.join(saved_videos_dir, str(st.session_state.video_links[video_link]))

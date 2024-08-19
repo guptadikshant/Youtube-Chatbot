@@ -1,17 +1,27 @@
 import os
 import shutil
 
-import whisper
+from groq import Groq
 from yt_dlp import YoutubeDL
+
+
+def audio_to_text(filepath):
+    client = Groq(api_key=os.environ['GROQ_API_KEY'])
+    with open(filepath, "rb") as file:
+        translation = client.audio.translations.create(
+            file=(filepath, file.read()),
+            model="whisper-large-v3",
+        )
+    return translation.text
 
 
 def download_youtube_video_transcript(video_link: str, path: str) -> None:
     YOUTUBE_DIR = "youtube_videos"
     try:
         os.makedirs(YOUTUBE_DIR, exist_ok=True)
-        
+
         URLS = [video_link]
-    
+
         ydl_opts = {
             'format': 'm4a/bestaudio/best',
             'postprocessors': [{  # Extract audio using ffmpeg
@@ -25,21 +35,26 @@ def download_youtube_video_transcript(video_link: str, path: str) -> None:
         with YoutubeDL(ydl_opts) as ydl:
             ydl.download(URLS)
 
-        whisper_model = whisper.load_model("base")
-    
+        # whisper_model = whisper.load_model("base")
+
         file = os.listdir(YOUTUBE_DIR)[0]
-        
+
         audio_file_path = os.path.join(YOUTUBE_DIR, file)
-        
+
         print(f"Audio file location: {audio_file_path}")
-    
-        transcription = whisper_model.transcribe(audio_file_path)["text"].strip()
-    
+
+        # transcription = whisper_model.transcribe(audio_file_path)["text"].strip()
+        # 
+        # with open(os.path.join(path, "transcript.txt"), "w") as file:
+        #     file.write(transcription)
+
+        transcription = audio_to_text(filepath=audio_file_path)
+
         with open(os.path.join(path, "transcript.txt"), "w") as file:
             file.write(transcription)
-    
+
     except FileNotFoundError:
         print(f"{os.path.join(path, 'transcript.txt')} already exists")
-    
+
     finally:
         shutil.rmtree(YOUTUBE_DIR)
