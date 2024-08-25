@@ -5,6 +5,16 @@
 3) Once this is done clone this repo and follow below steps
     - Open the cloned repo in any of the IDE
     - Create an virtual environment by either using python's venv module or conda. It upto you which one you prefer.
-   
-    1) If you are using venv, then run below command
+    I created the virtual environment using python's venv module
+    ```python
+    python venv <name of the environment>
+    ```
+    Once the virtual environment created, we need to activate it using the below command
+    ```python
+    venv\Scripts\activate
+    ```
+    And then install all the requirements
+    ```python
+    pip install -r requirements.txt
+    ```
         
