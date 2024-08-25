@@ -18,7 +18,8 @@
     ```python
     pip install -r requirements.txt
     ```
-4) Once all the reuirements installed, we can start the streamlit server using below command
+4) After that create your groq api key from [site](https://console.groq.com/keys) and then create .env file using the .env_template file
+5) Once all the reuirements installed, we can start the streamlit server using below command
     ```python
     streamlit run main.py
     ```
