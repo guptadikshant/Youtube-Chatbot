@@ -6,6 +6,7 @@
     - Open the cloned repo in any of the IDE
     - Create an virtual environment by either using python's venv module or conda. It upto you which one you prefer.
     I created the virtual environment using python's venv module
+
     ```python
     python venv <name of the environment>
     ```
@@ -16,5 +17,9 @@
     And then install all the requirements
     ```python
     pip install -r requirements.txt
+    ```
+4) Once all the reuirements installed, we can start the streamlit server using below command
+    ```python
+    streamlit run main.py
     ```
         
