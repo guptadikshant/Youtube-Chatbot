@@ -18,7 +18,7 @@
     ```python
     pip install -r requirements.txt
     ```
-4) Once all the reuirements installed, we can start the streamlit server using below command
+4) Once all the requirements installed, we can start the streamlit server using below command
     ```python
     streamlit run main.py
     ```
